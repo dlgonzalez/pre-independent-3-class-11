@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 9: The World of News - Class 11</title>
+    <style>
+        /* === Custom Design System === */
+        :root {
+            /* Color Palette */
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            
+            --blue-600: #2563eb;
+            --blue-500: #3b82f6;
+            --blue-100: #dbeafe;
+            
+            --emerald-600: #059669;
+            --emerald-500: #10b981;
+            --emerald-100: #d1fae5;
+            
+            --coral-600: #e11d48;
+            --coral-100: #ffe4e6;
+            
+            --text-main: #334155;
+            --text-light: #64748b;
+            
+            /* Spacing & Borders */
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            
+            /* Typography */
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--slate-100);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* === Improved Header === */
+        header {
+            background: linear-gradient(135deg, var(--slate-900), var(--slate-800));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 5px solid var(--blue-500);
+        }
+
+        .header-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .header-title .badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid var(--blue-500);
+            padding: 0.25rem 1rem;
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .header-info-container {
+            max-width: 900px;
+            margin: 2rem auto 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+        }
+
+        .info-card h3 {
+            color: var(--emerald-400);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+            color: var(--slate-200);
+            font-size: 0.95rem;
+        }
+        .info-card li { margin-bottom: 0.5rem; }
+        .info-card li::before {
+            content: "•";
+            color: var(--blue-400);
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        /* === Navigation === */
+        .tab-nav-container {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tab-btn {
+            background: var(--slate-100);
+            border: 1px solid var(--slate-200);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--slate-700);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .tab-btn:hover { background: var(--slate-200); }
+        .tab-btn.active {
+            background: var(--blue-600);
+            color: white;
+            border-color: var(--blue-600);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* === Main Content Area === */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === Reusable Components === */
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: var(--slate-900);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--slate-100);
+        }
+
+        .book-ref {
+            display: flex;
+            flex-direction: column;
+            border-left: 4px solid var(--blue-500);
+            background: var(--slate-50);
+            padding: 1.5rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-bottom: 2rem;
+        }
+
+        .book-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--blue-600);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .instruction-original {
+            color: var(--slate-700);
+            font-style: italic;
+            margin-bottom: 0.75rem;
+        }
+
+        .instruction-active {
+            font-weight: 600;
+            color: var(--slate-900);
+        }
+
+        .btn-primary {
+            background: var(--blue-600);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1rem;
+        }
+        .btn-primary:hover { background: var(--blue-500); }
+
+        .btn-secondary {
+            background: var(--slate-200);
+            color: var(--slate-800);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: var(--slate-300); }
+
+        .feedback-banner {
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-top: 1rem;
+            font-weight: 600;
+            display: none;
+        }
+        .feedback-banner.success {
+            display: block;
+            background: var(--emerald-100);
+            color: var(--emerald-600);
+            border: 1px solid var(--emerald-500);
+        }
+        .feedback-banner.error {
+            display: block;
+            background: var(--coral-100);
+            color: var(--coral-600);
+            border: 1px solid var(--coral-600);
+        }
+
+        /* === AI Co-Thinker === */
+        .ai-thinker {
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            border: 1px solid #c7d2fe;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: #4f46e5;
+            cursor: pointer;
+            user-select: none;
+        }
+        .ai-content {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #c7d2fe;
+            color: var(--slate-700);
+        }
+        .ai-content.show { display: block; }
+
+        /* === Improved Grammar Explanations === */
+        .grammar-guide-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .grammar-card {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+        .grammar-card h4 {
+            color: var(--blue-600);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .grammar-formula {
+            background: var(--slate-800);
+            color: #6ee7b7; /* Bright emerald for high contrast */
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-family: monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .grammar-examples {
+            list-style: none;
+            border-left: 3px solid var(--blue-300);
+            padding-left: 1rem;
+        }
+        .grammar-examples li { margin-bottom: 0.5rem; color: var(--slate-700); }
+        .grammar-examples li strong { color: var(--slate-900); }
+
+        /* === Productive Activity Textareas === */
+        .productive-task {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin-top: 2rem;
+        }
+        .productive-task textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--slate-300);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* === Activity Specific Styles === */
+        .slider-container { margin: 2rem 0; text-align: center; }
+        input[type=range] { width: 100%; max-width: 500px; margin: 1rem 0; }
+        
+        .dnd-container { display: grid; grid-template-columns: 1fr 3fr; gap: 2rem; }
+        .draggables { display: flex; flex-direction: column; gap: 0.5rem; }
+        .draggable-item { background: var(--slate-800); color: white; padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; cursor: grab; font-weight: 600; }
+        .text-cards { display: grid; gap: 1.5rem; }
+        .text-card { background: var(--slate-50); border: 1px solid var(--slate-200); padding: 1.5rem; border-radius: var(--radius-md); }
+        .drop-zone { min-height: 40px; border: 2px dashed var(--slate-400); border-radius: var(--radius-sm); margin-top: 1rem; display: flex; align-items: center; justify-content: center; color: var(--slate-500); font-weight: 600; transition: all 0.2s; }
+        .drop-zone.hover { background: var(--blue-100); border-color: var(--blue-500); }
+
+        .quiz-grid { display: grid; gap: 1rem; }
+        .quiz-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; background: var(--slate-50); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--slate-200); }
+        .quiz-item select, .quiz-item input { padding: 0.5rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm); font-family: inherit; }
+        .quiz-item input { width: 100%; }
+
+        /* Wrap Up Banner */
+        .wrap-up-banner {
+            background: linear-gradient(135deg, var(--slate-900), var(--slate-800));
+            color: white;
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-lg);
+            border-top: 8px solid var(--emerald-500);
+        }
+        .wrap-up-banner h2 { color: var(--emerald-400); font-size: 2rem; margin-bottom: 1rem; }
+        
+        .rubric-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .rubric-table th, .rubric-table td { border: 1px solid var(--slate-300); padding: 0.75rem; text-align: left; }
+        .rubric-table th { background: var(--slate-100); }
+        .rubric-input { width: 60px; padding: 0.5rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm); }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="header-title">
+                <span class="badge">Level: Pre-Independent 5 (B1+)</span>
+                <h1>The World of News</h1>
+                <p>Class 11 — Unit 9 Kickoff</p>
+            </div>
+            <div class="header-info-container">
+                <div class="info-card">
+                    <h3>📋 Agenda</h3>
+                    <ul>
+                        <li>Media Mindset Warm-Up</li>
+                        <li>Reading: The Changing Times</li>
+                        <li>Vocab: 21st Century News</li>
+                        <li>Grammar: So, Such, Too, Enough</li>
+                        <li>Speaking Task & Wrap-Up</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>🎯 Objectives</h3>
+                    <ul>
+                        <li>Identify diverse text types & bias</li>
+                        <li>Master media & journalism vocabulary</li>
+                        <li>Express opinions with complex grammar</li>
+                        <li>Launch the "Newsroom" Unit Project</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav-container">
+        <nav class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tab1')">1. Warm Up</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">2. Reading</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">3. Vocabulary</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">4. Grammar</button>
+            <button class="tab-btn" onclick="switchTab('tab5')">5. Speaking</button>
+            <button class="tab-btn" onclick="switchTab('tab6')">6. Wrap-Up</button>
+        </nav>
+    </div>
+
+    <main>
+        <!-- TAB 1: WARM UP -->
+        <section id="tab1" class="tab-content active">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Book Reference: What Do You Already Know? (Page 102)</span>
+                    <p class="instruction-original">"Think of words you know about media and the news. Write the words. In groups, watch the video and answer the question: The news—how much is too much?"</p>
+                    <p class="instruction-active">Action: Brainstorm modern media terms below. Then, use the interactive slider to evaluate your own news habits and discuss with your group.</p>
+                </div>
+
+                <h2 class="section-title">Part A: Brainstorming Categories</h2>
+                <p>Jot down at least 2 words for each category to warm up your brain.</p>
+                <div class="quiz-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1rem;">
+                    <div class="quiz-item"><strong>Types of Media:</strong> <input type="text" placeholder="e.g., Podcasts..."></div>
+                    <div class="quiz-item"><strong>People in News:</strong> <input type="text" placeholder="e.g., Journalist..."></div>
+                    <div class="quiz-item"><strong>Sections of a Paper:</strong> <input type="text" placeholder="e.g., Sports..."></div>
+                    <div class="quiz-item"><strong>Verbs for News:</strong> <input type="text" placeholder="e.g., Report..."></div>
+                </div>
+
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--slate-200);">
+
+                <h2 class="section-title">Part B: How much is too much?</h2>
+                <div class="slider-container">
+                    <p>Slide to represent your daily news consumption:</p>
+                    <input type="range" id="newsSlider" min="1" max="100" value="50" oninput="updateSliderText(this.value)">
+                    <h3 id="sliderOutput" style="color: var(--blue-600); margin-top: 1rem;">50% - "I check the headlines occasionally."</h3>
+                </div>
+
+                <div class="ai-thinker">
+                    <div class="ai-header" onclick="toggleAI('ai1')">
+                        🤖 AI Co-Thinker: Need help expressing your opinion? Click here.
+                    </div>
+                    <div id="ai1" class="ai-content">
+                        <strong>Useful Help Phrases:</strong>
+                        <ul>
+                            <li>"Personally, I find the 24/7 news cycle exhausting..."</li>
+                            <li>"I try to stay informed, but I limit my screen time because..."</li>
+                            <li>"I think it's too much when..."</li>
+                        </ul>
+                        <br>
+                        <strong>Sample B1+ Answer:</strong> "I’m pretty interested, but I think there is *too much* negative news. I follow a few reliable online articles, but I ignore social media newsfeeds because they are often full of fake news."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: READING -->
+        <section id="tab2" class="tab-content">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Book Reference: Reading Skill - Identify Text Types (Page 103)</span>
+                    <p class="instruction-original">"Read the texts. Write the correct text type from the box next to each text. Compare arguments."</p>
+                    <p class="instruction-active">Action: Drag and drop the correct text type to the corresponding article. Then, complete the 10-question Comprehension Check below.</p>
+                </div>
+
+                <h2 class="section-title">Part A: Identify Text Types (Drag & Drop)</h2>
+                <div class="dnd-container" style="margin-top: 1.5rem;">
+                    <div class="draggables">
+                        <h4>Drag these:</h4>
+                        <div class="draggable-item" draggable="true" ondragstart="drag(event)" id="drag1">blog post</div>
+                        <div class="draggable-item" draggable="true" ondragstart="drag(event)" id="drag2">email</div>
+                        <div class="draggable-item" draggable="true" ondragstart="drag(event)" id="drag3">online article</div>
+                        <div class="draggable-item" draggable="true" ondragstart="drag(event)" id="drag4">review</div>
+                        <div class="draggable-item" draggable="true" ondragstart="drag(event)" id="drag5">tweet</div>
+                    </div>
+                    
+                    <div class="text-cards">
+                        <div class="text-card">
+                            <strong>1. Changing Times</strong>
+                            <p>It’s no surprise that newspaper sales have fallen in recent years and TV news audiences are smaller because of the effect of 24/7 online news sites... There will always be journalism.</p>
+                            <div class="drop-zone" ondrop="drop(event, 'online article')" ondragover="allowDrop(event)">Drop Text Type Here</div>
+                        </div>
+                        <div class="text-card">
+                            <strong>2. jamiek 12:23</strong>
+                            <p>I never buy newspapers these days... I see some news items on social media, but the majority are human-interest stories...</p>
+                            <div class="drop-zone" ondrop="drop(event, 'blog post')" ondragover="allowDrop(event)">Drop Text Type Here</div>
+                        </div>
+                        <div class="text-card">
+                            <strong>3. Citizen Journalism: The Word on the Street</strong>
+                            <p>A must-read for all journalism students is Citizen Journalists by Amos Hadfield... "Governments want more power, but that is also dangerous."</p>
+                            <div class="drop-zone" ondrop="drop(event, 'review')" ondragover="allowDrop(event)">Drop Text Type Here</div>
+                        </div>
+                        <div class="text-card">
+                            <strong>4. Amber Spratt @ The Ark</strong>
+                            <p>Breaking news! People are here in the thousands—there’s such an amazing atmosphere right now. #excitingtimes</p>
+                            <div class="drop-zone" ondrop="drop(event, 'tweet')" ondragover="allowDrop(event)">Drop Text Type Here</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="dnd-feedback" class="feedback-banner"></div>
+
+                <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--slate-200);">
+
+                <h2 class="section-title">Part B: Comprehension Check</h2>
+                <p style="margin-bottom: 1rem;">Select T (True), F (False), or NG (Not Given) for the following statements based on the texts.</p>
+                <div class="quiz-grid" id="reading-quiz">
+                    <!-- JS will populate 10 items here -->
+                </div>
+                <button class="btn-primary" onclick="checkReading()">Check Reading Answers</button>
+                <div id="reading-feedback" class="feedback-banner"></div>
+            </div>
+        </section>
+
+        <!-- TAB 3: VOCABULARY -->
+        <section id="tab3" class="tab-content">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Book Reference: Match the Definitions (Page 104)</span>
+                    <p class="instruction-original">"Match the definitions to a word or phrase in bold in Reading B."</p>
+                    <p class="instruction-active">Action: Match the 15 essential B1+ journalism terms to their correct definitions to master 21st-century news vocabulary.</p>
+                </div>
+
+                <h2 class="section-title">News Jargon Masterclass</h2>
+                <div class="quiz-grid" id="vocab-quiz" style="margin-top: 1rem;">
+                    <!-- JS will populate 15 items here -->
+                </div>
+                <button class="btn-primary" onclick="checkVocab()">Evaluate Vocabulary</button>
+                <div id="vocab-feedback" class="feedback-banner"></div>
+            </div>
+        </section>
+
+        <!-- TAB 4: GRAMMAR -->
+        <section id="tab4" class="tab-content">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Book Reference: Grammar - So, Such, Too, Enough (Page 105)</span>
+                    <p class="instruction-original">"Complete the sentences from the texts. Rewrite the sentences correctly."</p>
+                    <p class="instruction-active">Action: Review the Grammar Guide carefully. Then, complete the Grammar Clinic and the Productive Task to practice using these modifiers in context.</p>
+                </div>
+
+                <h2 class="section-title">Part A: Grammar Guide</h2>
+                <div class="grammar-guide-grid">
+                    <div class="grammar-card">
+                        <h4>1. SO</h4>
+                        <div class="grammar-formula">SO + Adjective / Adverb</div>
+                        <p style="margin-bottom: 1rem; color: var(--slate-600); font-size: 0.9rem;">Used to mean "very" or to express an extreme degree, focusing purely on the descriptive word.</p>
+                        <ul class="grammar-examples">
+                            <li>The news spread <strong>so quickly</strong> across social media.</li>
+                            <li>The interview was <strong>so boring</strong> that I changed the channel.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="grammar-card">
+                        <h4>2. SUCH</h4>
+                        <div class="grammar-formula">SUCH + (a/an) + Adjective + Noun</div>
+                        <p style="margin-bottom: 1rem; color: var(--slate-600); font-size: 0.9rem;">Also means "very," but it must modify a <em>noun phrase</em>. It emphasizes the thing itself.</p>
+                        <ul class="grammar-examples">
+                            <li>It was <strong>such a shocking story</strong>.</li>
+                            <li>They are <strong>such credible journalists</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="grammar-card">
+                        <h4>3. TOO</h4>
+                        <div class="grammar-formula">TOO + Adjective / Adverb</div>
+                        <p style="margin-bottom: 1rem; color: var(--slate-600); font-size: 0.9rem;">Has a negative meaning. It means "more than what is needed or acceptable."</p>
+                        <ul class="grammar-examples">
+                            <li>There is <strong>too much</strong> fake news online.</li>
+                            <li>It is <strong>too dangerous</strong> to report from the war zone.</li>
+                        </ul>
+                    </div>
+
+                    <div class="grammar-card">
+                        <h4>4. ENOUGH</h4>
+                        <div class="grammar-formula">Adjective / Adverb + ENOUGH</div>
+                        <p style="margin-bottom: 1rem; color: var(--slate-600); font-size: 0.9rem;">Means "sufficient" or "the right amount." Notice that it comes <em>after</em> the adjective/adverb.</p>
+                        <ul class="grammar-examples">
+                            <li>He is experienced <strong>enough</strong> to write this column.</li>
+                            <li>Is this microphone loud <strong>enough</strong> for the broadcast?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--slate-200);">
+
+                <h2 class="section-title">Part B: Intensive Grammar Clinic</h2>
+                <p>Fill in the blanks using <strong>so, such, too,</strong> or <strong>enough</strong>.</p>
+                <div class="quiz-grid" id="grammar-quiz" style="margin-top: 1rem; grid-template-columns: 1fr 1fr;">
+                    <!-- JS will populate 20 items here -->
+                </div>
+                <button class="btn-primary" onclick="checkGrammar()">Verify Grammar</button>
+                <div id="grammar-feedback" class="feedback-banner"></div>
+
+                <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--slate-200);">
+
+                <!-- NEW PRODUCTIVE TASK -->
+                <h2 class="section-title">Part C: Productive Task - The Editor's Desk</h2>
+                <p>Before moving to speaking, put your grammar into practice. Write one original sentence for each situation using the target grammar word provided.</p>
+                
+                <div class="productive-task">
+                    <strong>Situation 1:</strong> You read an article that was incredibly biased. You couldn't even finish reading it. <br>
+                    <em style="color: var(--blue-600); font-size: 0.9rem;">(Use: <strong>so</strong>)</em>
+                    <textarea placeholder="Write your sentence here..."></textarea>
+
+                    <strong>Situation 2:</strong> A new journalist wants to report on a highly complex political scandal, but they lack experience. <br>
+                    <em style="color: var(--blue-600); font-size: 0.9rem;">(Use: <strong>enough</strong>)</em>
+                    <textarea placeholder="Write your sentence here..."></textarea>
+
+                    <strong>Situation 3:</strong> You are watching a TV broadcast, but the sensationalism is extreme and annoying. <br>
+                    <em style="color: var(--blue-600); font-size: 0.9rem;">(Use: <strong>such</strong>)</em>
+                    <textarea placeholder="Write your sentence here..."></textarea>
+                </div>
+
+                <div class="ai-thinker">
+                    <div class="ai-header" onclick="toggleAI('ai_productive')">
+                        🤖 AI Co-Thinker: Stuck? Click to see sample editor sentences.
+                    </div>
+                    <div id="ai_productive" class="ai-content">
+                        <strong>Sample Answers:</strong>
+                        <ol>
+                            <li>The article was <strong>so biased</strong> that I had to stop reading it immediately.</li>
+                            <li>The new journalist is not experienced <strong>enough</strong> to cover a scandal this large.</li>
+                            <li>It was <strong>such a sensationalist broadcast</strong> that I refused to watch it.</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 5: SPEAKING & WRAP-UP -->
+        <section id="tab5" class="tab-content">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Book Reference: Make Notes & Class Survey (Page 105)</span>
+                    <p class="instruction-original">"Write three opinion questions about Fake news, Journalists, or Citizen journalists. Use too, so, such, or enough in your questions."</p>
+                    <p class="instruction-active">Action: Formulate 3 interview questions using the grammar. Then, interview a partner while your teacher uses the Interactive Rubric to grade your fluency.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+                    <div>
+                        <h2 class="section-title">Step 1: The Interview Questions</h2>
+                        <div class="quiz-grid" style="margin-top: 1rem;">
+                            <input type="text" placeholder="1. e.g., Is there too much fake news on TikTok?" style="width: 100%; padding: 0.75rem;">
+                            <input type="text" placeholder="2." style="width: 100%; padding: 0.75rem;">
+                            <input type="text" placeholder="3." style="width: 100%; padding: 0.75rem;">
+                        </div>
+
+                        <div class="ai-thinker" style="margin-top: 2rem;">
+                            <div class="ai-header" onclick="toggleAI('ai2')">
+                                🗣️ Confident Communicator Phrases
+                            </div>
+                            <div id="ai2" class="ai-content">
+                                <ul>
+                                    <li>"Do you mind if I ask you about..."</li>
+                                    <li>"What's your take on..."</li>
+                                    <li>"Don't you think it's such a..."</li>
+                                </ul>
+                                <br>
+                                <strong>Sample Question:</strong> "Do you think citizen journalists are professional <strong>enough</strong> to cover real politics?"
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="section-title">Step 2: Interactive Rubric</h2>
+                        <p>Evaluator: Fill this out during the live interview.</p>
+                        <input type="text" id="studentName" placeholder="Student Name" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem;">
+                        <table class="rubric-table">
+                            <tr>
+                                <th>Criteria (1-5)</th>
+                                <th>Score</th>
+                            </tr>
+                            <tr>
+                                <td><strong>Grammar:</strong> Correct use of so/such/too/enough</td>
+                                <td><input type="number" id="scoreGrammar" class="rubric-input" min="1" max="5" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vocabulary:</strong> Use of Unit 9 media jargon</td>
+                                <td><input type="number" id="scoreVocab" class="rubric-input" min="1" max="5" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fluency:</strong> Smooth delivery, asking follow-ups</td>
+                                <td><input type="number" id="scoreFluency" class="rubric-input" min="1" max="5" value="5"></td>
+                            </tr>
+                        </table>
+                        <button class="btn-secondary" onclick="generateReport()">Generate Feedback Report</button>
+                        <div id="rubric-report" style="margin-top: 1rem; padding: 1rem; background: var(--slate-100); border-radius: var(--radius-sm); font-size: 0.875rem; display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: WRAP-UP -->
+        <section id="tab6" class="tab-content">
+            <div class="card">
+                <h2 class="section-title">Consolidation: The 60-Second Debate</h2>
+                <p>Before we launch into our Unit Project, let's consolidate what we've learned today. In groups, choose <strong>one</strong> of the hot takes below. You have 60 seconds to state your group's final verdict. You must use at least two new vocabulary words and one target grammar structure (so, such, too, enough).</p>
+                
+                <div class="quiz-grid" style="grid-template-columns: 1fr 1fr; margin: 2rem 0;">
+                    <div class="text-card" style="background: var(--coral-100); border-color: var(--coral-600);">
+                        <h3 style="color: var(--coral-600); margin-bottom: 0.5rem;">🔥 Hot Take 1</h3>
+                        <p style="color: var(--slate-900);">"Citizen journalism is <strong>too dangerous</strong> because ordinary people are not credible <strong>enough</strong> to report facts without bias."</p>
+                    </div>
+                    <div class="text-card" style="background: var(--emerald-100); border-color: var(--emerald-500);">
+                        <h3 style="color: var(--emerald-600); margin-bottom: 0.5rem;">🔥 Hot Take 2</h3>
+                        <p style="color: var(--slate-900);">"Traditional TV news is <strong>such a dying industry</strong> that it will completely disappear in the next 10 years."</p>
+                    </div>
+                </div>
+                
+                <!-- EXPLICIT WRAP UP & PROJECT LAUNCH -->
+                <div class="wrap-up-banner">
+                    <span style="background: var(--emerald-500); padding: 0.25rem 0.75rem; border-radius: 99px; font-weight: bold; font-size: 0.875rem; text-transform: uppercase;">Wrap-Up & Unit 9 Mission Launch</span>
+                    <h2>🗞️ The Citizen Journalism Newsroom</h2>
+                    <p style="font-size: 1.1rem; max-width: 800px; margin: 0 auto 1.5rem auto;">
+                        Great job today! Over the next 4 classes, you and your group will become an editorial team to build and launch your own digital mini-newspaper or news broadcast. 
+                    </p>
+                    <ul style="text-align: left; max-width: 600px; margin: 0 auto; list-style-type: none; font-size: 1.05rem; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: var(--radius-md);">
+                        <li style="margin-bottom: 0.75rem;">✅ <strong>Class 11 (Today):</strong> Analyzed text types & built media vocabulary.</li>
+                        <li style="margin-bottom: 0.75rem;">📅 <strong>Class 12:</strong> Assign roles (Editor, Reporter, Photographer) & pitch story ideas.</li>
+                        <li style="margin-bottom: 0.75rem;">📅 <strong>Class 13:</strong> Draft articles using target grammar to critique current trends.</li>
+                        <li style="margin-bottom: 0;">🎯 <strong>Class 14/15:</strong> Publish & Present your "Front Page" to the class!</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // === Tab Navigation Logic ===
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // === Warm Up Logic ===
+        function updateSliderText(val) {
+            const output = document.getElementById('sliderOutput');
+            if (val < 30) output.innerHTML = `${val}% - "I rarely check the news. Not interested."`;
+            else if (val < 70) output.innerHTML = `${val}% - "I check the headlines occasionally."`;
+            else if (val < 90) output.innerHTML = `${val}% - "I read articles and watch broadcasts daily."`;
+            else output.innerHTML = `${val}% - "I am constantly scrolling. It might be too much!"`;
+        }
+
+        // === AI Co-Thinker Logic ===
+        function toggleAI(id) {
+            document.getElementById(id).classList.toggle('show');
+        }
+
+        // === Drag & Drop Logic ===
+        let draggedItem = null;
+        function drag(ev) {
+            draggedItem = ev.target;
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.target.classList.add('hover');
+        }
+        function drop(ev, expectedType) {
+            ev.preventDefault();
+            ev.target.classList.remove('hover');
+            
+            if (ev.target.className.includes('drop-zone')) {
+                const data = ev.dataTransfer.getData("text");
+                const item = document.getElementById(data);
+                
+                // Simple validation check visually
+                if (item.innerText === expectedType) {
+                    ev.target.innerHTML = `<span style="color:var(--emerald-600)">✅ ${item.innerText}</span>`;
+                    item.style.display = 'none'; // Hide from list
+                } else {
+                    ev.target.innerHTML = `<span style="color:var(--coral-600)">❌ Try Again</span>`;
+                    setTimeout(() => ev.target.innerHTML = 'Drop Text Type Here', 1500);
+                }
+            }
+        }
+
+        // === Reading Quiz Logic (Volume Rule: 10 Items) ===
+        const readingData = [
+            { q: "1. Newspaper sales have fallen mainly because of TV news.", a: "F" },
+            { q: "2. The writer of Text 1 believes the journalism industry will survive.", a: "T" },
+            { q: "3. JamieK (Text 2) reads printed newspapers on weekends.", a: "NG" },
+            { q: "4. JamieK reposts a lot of human-interest stories online.", a: "F" },
+            { q: "5. Citizen journalism involves ordinary people reporting news.", a: "T" },
+            { q: "6. Amos Hadfield says citizen journalism is very easy to control.", a: "F" },
+            { q: "7. The government wants to create its own fake news sites.", a: "NG" },
+            { q: "8. Amber Spratt is reporting live from an event as it happens.", a: "T" },
+            { q: "9. Fake news is mentioned as a positive aspect of citizen journalism.", a: "F" },
+            { q: "10. Text 1 notes that TV audiences are smaller now.", a: "T" }
+        ];
+
+        const readingContainer = document.getElementById('reading-quiz');
+        readingData.forEach((item, index) => {
+            readingContainer.innerHTML += `
+                <div class="quiz-item">
+                    <span>${item.q}</span>
+                    <select id="read-q${index}">
+                        <option value="">Select...</option>
+                        <option value="T">True (T)</option>
+                        <option value="F">False (F)</option>
+                        <option value="NG">Not Given (NG)</option>
+                    </select>
+                </div>
+            `;
+        });
+
+        function checkReading() {
+            let score = 0;
+            readingData.forEach((item, index) => {
+                const select = document.getElementById(`read-q${index}`);
+                if (select.value === item.a) {
+                    select.style.borderColor = "var(--emerald-500)";
+                    select.style.backgroundColor = "var(--emerald-100)";
+                    score++;
+                } else {
+                    select.style.borderColor = "var(--coral-600)";
+                    select.style.backgroundColor = "var(--coral-100)";
+                }
+            });
+            const feedback = document.getElementById('reading-feedback');
+            feedback.className = `feedback-banner ${score === 10 ? 'success' : 'error'}`;
+            feedback.innerHTML = `You got ${score}/10 correct. ${score === 10 ? 'Excellent comprehension!' : 'Review the texts and try again.'}`;
+        }
+
+        // === Vocabulary Quiz Logic (Volume Rule: 15 Items) ===
+        const vocabWords = [
+            "human-interest stories", "effect", "industry", "governments", "trend", 
+            "bias", "broadcast", "headline", "credible", "sensationalism", 
+            "source", "fake news", "current affairs", "journalism", "newsfeed"
+        ].sort();
+
+        const vocabDefs = [
+            { d: "1. The activity of reporting the news.", a: "journalism" },
+            { d: "2. News reports about a person's life or emotions.", a: "human-interest stories" },
+            { d: "3. A change that is the result of another action.", a: "effect" },
+            { d: "4. The groups of people who control a country.", a: "governments" },
+            { d: "5. Something popular at a specific time.", a: "trend" },
+            { d: "6. Completely untrue information disguised as news.", a: "fake news" },
+            { d: "7. Events happening right now discussed in reports.", a: "current affairs" },
+            { d: "8. The title of a newspaper article printed in large letters.", a: "headline" },
+            { d: "9. A specific trade or service (e.g., the media _____).", a: "industry" },
+            { d: "10. Able to be believed; trustworthy.", a: "credible" },
+            { d: "11. Unfair preference for or against something.", a: "bias" },
+            { d: "12. To transmit a TV or radio program.", a: "broadcast" },
+            { d: "13. A person, book, or document that provides information.", a: "source" },
+            { d: "14. Exaggerating stories to shock people and get clicks.", a: "sensationalism" },
+            { d: "15. A continuous list of updates on social media.", a: "newsfeed" }
+        ];
+
+        let selectOptions = `<option value="">Select term...</option>`;
+        vocabWords.forEach(w => selectOptions += `<option value="${w}">${w}</option>`);
+
+        const vocabContainer = document.getElementById('vocab-quiz');
+        vocabDefs.forEach((item, index) => {
+            vocabContainer.innerHTML += `
+                <div class="quiz-item" style="grid-template-columns: 1fr 200px;">
+                    <span>${item.d}</span>
+                    <select id="voc-q${index}">${selectOptions}</select>
+                </div>
+            `;
+        });
+
+        function checkVocab() {
+            let score = 0;
+            vocabDefs.forEach((item, index) => {
+                const select = document.getElementById(`voc-q${index}`);
+                if (select.value === item.a) {
+                    select.style.borderColor = "var(--emerald-500)";
+                    select.style.backgroundColor = "var(--emerald-100)";
+                    score++;
+                } else {
+                    select.style.borderColor = "var(--coral-600)";
+                    select.style.backgroundColor = "var(--coral-100)";
+                }
+            });
+            const feedback = document.getElementById('vocab-feedback');
+            feedback.className = `feedback-banner ${score === 15 ? 'success' : 'error'}`;
+            feedback.innerHTML = `You got ${score}/15 correct. ${score === 15 ? 'Vocabulary Master!' : 'Keep trying!'}`;
+        }
+
+        // === Grammar Quiz Logic (Volume Rule: 20 Items) ===
+        const grammarData = [
+            { text: "1. The news report was [?] shocking I couldn't watch it.", a: "so" },
+            { text: "2. Jake is not confident [?] to succeed as a live TV reporter.", a: "enough" },
+            { text: "3. My report is good [?]. I don't need to rewrite it.", a: "enough" },
+            { text: "4. Being a journalist must be [?] an interesting job.", a: "such" },
+            { text: "5. There is [?] much fake news on the internet right now.", a: "too" },
+            { text: "6. She speaks [?] quickly for me to understand the broadcast.", a: "too" },
+            { text: "7. It was [?] a long article that I didn't finish reading it.", a: "such" },
+            { text: "8. The website is [?] poorly designed.", a: "so" },
+            { text: "9. We arrived [?] late to interview the politician.", a: "too" },
+            { text: "10. He didn't have [?] evidence to publish the story.", a: "enough" },
+            { text: "11. The headline was [?] misleading that people got angry.", a: "so" },
+            { text: "12. It is [?] dangerous to report from the war zone without a helmet.", a: "too" },
+            { text: "13. They are [?] credible journalists. I trust them.", a: "such" },
+            { text: "14. Is this microphone loud [?] for the audience to hear?", a: "enough" },
+            { text: "15. The interview was [?] boring that I changed the channel.", a: "so" },
+            { text: "16. She has [?] a biased opinion about the government.", a: "such" },
+            { text: "17. I'm [?] tired to watch the late-night news.", a: "too" },
+            { text: "18. He didn't research deeply [?] to find the real source.", a: "enough" },
+            { text: "19. The trend became [?] popular overnight.", a: "so" },
+            { text: "20. That was [?] a terrible sensationalist article.", a: "such" }
+        ];
+
+        const grammarContainer = document.getElementById('grammar-quiz');
+        grammarData.forEach((item, index) => {
+            const parts = item.text.split('[?]');
+            grammarContainer.innerHTML += `
+                <div style="background: white; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--slate-200);">
+                    ${parts[0]} <input type="text" id="gram-q${index}" style="width: 70px; text-align: center; font-weight: bold;"> ${parts[1]}
+                </div>
+            `;
+        });
+
+        function checkGrammar() {
+            let score = 0;
+            grammarData.forEach((item, index) => {
+                const input = document.getElementById(`gram-q${index}`);
+                if (input.value.toLowerCase().trim() === item.a) {
+                    input.style.borderColor = "var(--emerald-500)";
+                    input.style.backgroundColor = "var(--emerald-100)";
+                    score++;
+                } else {
+                    input.style.borderColor = "var(--coral-600)";
+                    input.style.backgroundColor = "var(--coral-100)";
+                }
+            });
+            const feedback = document.getElementById('grammar-feedback');
+            feedback.className = `feedback-banner ${score === 20 ? 'success' : 'error'}`;
+            feedback.innerHTML = `Score: ${score}/20. ${score === 20 ? 'Perfect Grammar!' : 'Review the red boxes.'}`;
+        }
+
+        // === Rubric Report Logic ===
+        function generateReport() {
+            const name = document.getElementById('studentName').value || "The student";
+            const g = parseInt(document.getElementById('scoreGrammar').value);
+            const v = parseInt(document.getElementById('scoreVocab').value);
+            const f = parseInt(document.getElementById('scoreFluency').value);
+            const total = g + v + f;
+            const percentage = Math.round((total / 15) * 100);
+            
+            const reportDiv = document.getElementById('rubric-report');
+            reportDiv.style.display = "block";
+            
+            let comment = "";
+            if (percentage >= 90) comment = "Excellent job using complex grammar and new media vocabulary effectively!";
+            else if (percentage >= 70) comment = "Good effort. Try to incorporate more specific news jargon (like 'bias' or 'credible') next time.";
+            else comment = "Keep practicing the so/such/too/enough structures. Review the grammar tab before the next class.";
+
+            reportDiv.innerHTML = `
+                <strong>Feedback Report for ${name}:</strong><br>
+                Total Score: ${total}/15 (${percentage}%)<br><br>
+                <em>Evaluator Notes:</em> ${comment}
+            `;
+        }
+    </script>
+</body>
+</html>
